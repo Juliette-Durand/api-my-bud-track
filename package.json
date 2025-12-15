@@ -17,6 +17,12 @@
   "homepage": "https://github.com/Juliette-Durand/api-my-bud-track#readme",
   "description": "",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "^7.1.0",
+    "dotenv": "^17.2.3",
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "prisma": "^7.1.0"
   }
 }
