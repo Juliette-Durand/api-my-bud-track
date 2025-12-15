@@ -5,10 +5,115 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+    provider = "prisma-client-js"
+    output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+    provider = "postgresql"
+}
+
+// === MODELS === //
+model User {
+    id        Int      @id @default(autoincrement())
+    lastname  String   @db.VarChar(50)
+    firstname String   @db.VarChar(50)
+    email     String   @unique @db.VarChar(120)
+    password  String
+    createdAt DateTime @default(now())
+    isActive  Boolean  @default(true)
+    roleAppId Int
+
+    transactions  Transaction[]
+    ownedAccounts OwnAccount[]
+
+    roleApp RoleApp @relation(fields: [roleAppId], references: [id])
+
+    @@index([roleAppId])
+    @@map("user")
+}
+
+model RoleApp {
+    id    Int    @id @default(autoincrement())
+    label String @unique @db.VarChar(20)
+    users User[]
+
+    @@map("role_app")
+}
+
+model TypeAccount {
+    id       Int       @id @default(autoincrement())
+    label    String    @unique @db.VarChar(50)
+    accounts Account[]
+
+    @@map("type_account")
+}
+
+model Account {
+    id            Int      @id @default(autoincrement())
+    label         String   @db.VarChar(50)
+    balance       Decimal  @db.Decimal(9, 2) // MIN = 9999999.99 | MAX = 9999999.99
+    createdAt     DateTime @default(now())
+    isActive      Boolean  @default(true)
+    typeAccountId Int
+
+    outgoingTransactions Transaction[] @relation("SourceAccount")
+    incomingTransactions Transaction[] @relation("DestinationAccount")
+    owners               OwnAccount[]
+
+    typeAccount TypeAccount @relation(fields: [typeAccountId], references: [id])
+
+    @@index([typeAccountId])
+    @@index([isActive])
+    @@map("account")
+}
+
+model CategoryTransaction {
+    id           Int           @id @default(autoincrement())
+    label        String        @unique @db.VarChar(50)
+    icon         String        @db.VarChar(30)
+    transactions Transaction[]
+
+    @@map("category_transaction")
+}
+
+model Transaction {
+    id            Int       @id @default(autoincrement())
+    label         String    @db.VarChar(50)
+    date          DateTime
+    amount        Decimal   @db.Decimal(9, 2)
+    type          TransType
+    categoryId    Int
+    ownerId       Int
+    srcAccountId  Int
+    destAccountId Int
+
+    category    CategoryTransaction @relation(fields: [categoryId], references: [id])
+    owner       User                @relation(fields: [ownerId], references: [id])
+    srcAccount  Account             @relation("SourceAccount", fields: [srcAccountId], references: [id])
+    destAccount Account             @relation("DestinationAccount", fields: [destAccountId], references: [id])
+
+    @@index([date])
+    @@index([type])
+    @@index([ownerId, date])
+    @@index([srcAccountId, date])
+    @@index([destAccountId, date])
+    @@map("transaction")
+}
+
+model OwnAccount {
+    userId    Int
+    accountId Int
+
+    user    User    @relation(fields: [userId], references: [id])
+    account Account @relation(fields: [accountId], references: [id])
+
+    @@id([userId, accountId])
+    @@index([accountId])
+    @@map("own_account")
+}
+
+enum TransType {
+    CREDIT
+    DEBIT
 }
