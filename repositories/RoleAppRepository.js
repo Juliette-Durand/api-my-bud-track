@@ -6,7 +6,7 @@ const prisma = require('../config/prisma');
  */
 async function getAllRoles() {
 
-    const roles = await prisma.role_app.findMany();
+    const roles = await prisma.roleApp.findMany();
     
     return roles;
 }
@@ -18,7 +18,7 @@ async function getAllRoles() {
  */
 async function getRoleById(id) {
 
-    const role = await prisma.role_app.findUnique({
+    const role = await prisma.roleApp.findUnique({
         where: {
             id: id
         }
@@ -36,7 +36,7 @@ async function addRole(role) {
     
     const { label } = role;
 
-    const result = await prisma.role_app.create({
+    const result = await prisma.roleApp.create({
         data: {
             label: label
         }
@@ -55,7 +55,7 @@ async function updateRole(id, role) {
     
     const { label } = role;
 
-    const result = await prisma.role_app.update({
+    const result = await prisma.roleApp.update({
         where: {
             id: id
         },
@@ -74,7 +74,7 @@ async function updateRole(id, role) {
  */
 async function deleteRole(id) {
 
-    const result = await prisma.role_app.delete({
+    const result = await prisma.roleApp.delete({
         where: {
             id: id
         }
