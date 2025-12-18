@@ -4,7 +4,7 @@ const userRepository = require('../repositories/userRepository.js');
  * Récupère la liste des utilisateurs
  */
 async function findAllUsers() {
-    return await userRepository.getAllRoles();
+    return await userRepository.getAllUsers();
 }
 
 /**
@@ -15,7 +15,7 @@ async function findUserById(id) {
     if (isNaN(id)) {
         throw new Error("L'id doit être de type Number");
     }
-    return await userRepository.getRoleById(id);
+    return await userRepository.getUserById(id);
 }
 
 /**
@@ -44,7 +44,7 @@ async function createUser(user) {
         throw new Error("Le mot de passe est obligatoire");
     }
     
-    return await userRepository.addRole(user);
+    return await userRepository.addUser(user);
 }
 
 /**
@@ -61,7 +61,7 @@ async function editUserProfile(id, user) {
         throw new Error("Le prénom est obligatoire");
     }
     
-    return await userRepository.updateRole(id, user);
+    return await userRepository.updateUserProfile(id, user);
 }
 
 /**
@@ -80,7 +80,7 @@ async function editUserEmail(id, email) {
         throw new Error("Cette adresse email est déjà utilisée");
     }
     
-    return await userRepository.updateRole(id, email);
+    return await userRepository.updateUserEmail(id, email);
 }
 
 /**
@@ -95,7 +95,7 @@ async function editUserRole(id, roleId) {
         throw new Error("L'id du rôle doit être de type Number");
     }
     
-    return await userRepository.updateRole(id, roleId);
+    return await userRepository.updateUserRole(id, roleId);
 }
 
 /**
@@ -110,7 +110,7 @@ async function editUserPassword(id, password) {
         throw new Error("Le mot de passe est obligatoire");
     }
     
-    return await userRepository.updateRole(id, password);
+    return await userRepository.updateUserPassword(id, password);
 }
 
 /**
@@ -121,7 +121,7 @@ async function removeUser(id) {
     if (isNaN(id)) {
         throw new Error("L'id doit être de type Number");
     }
-    return await userRepository.deleteRole(id);
+    return await userRepository.deleteUser(id);
 }
 
 module.exports = {
