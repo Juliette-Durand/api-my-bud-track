@@ -12,7 +12,7 @@ async function getAllUsers() {
             lastname: true,
             firstname: true,
             email: true,
-            roleAppId: {
+            roleApp: {
                 select: { label: true }
             }
         },
@@ -37,7 +37,7 @@ async function getUserById(id) {
             lastname: true,
             firstname: true,
             email: true,
-            roleAppId: {
+            roleApp: {
                 select: {
                     id: true,
                     label: true
