@@ -23,10 +23,13 @@ async function findCategoryById(id) {
  */
 async function createCategory(typeAccount) {
 
-    const { label } = typeAccount;   
+    const { label, icon } = typeAccount;   
 
     if (!label) {
         throw new Error("Le libellé est obligatoire");
+    }
+    if (!icon) {
+        throw new Error("L'icône est obligatoire");
     }
     
     return await catTransactionRepository.addCategory(typeAccount);
@@ -37,10 +40,13 @@ async function createCategory(typeAccount) {
  */
 async function editCategory(id, typeAccount) {
 
-    const { label } = typeAccount;
+    const { label, icon } = typeAccount;
 
     if (!label) {
         throw new Error("Le libellé est obligatoire");
+    }
+    if (!icon) {
+        throw new Error("L'icône est obligatoire");
     }
     
     return await catTransactionRepository.updateCategory(id, typeAccount);
