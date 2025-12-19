@@ -34,11 +34,12 @@ async function getCategoryById(id) {
  */
 async function addCategory(catTransaction) {
     
-    const { label } = catTransaction;
+    const { label, icon } = catTransaction;
 
     const result = await prisma.categoryTransaction.create({
         data: {
-            label: label
+            label: label,
+            icon: icon
         }
     });
 
@@ -53,14 +54,15 @@ async function addCategory(catTransaction) {
  */
 async function updateCategory(id, catTransaction) {
     
-    const { label } = catTransaction;
+    const { label, icon } = catTransaction;
 
     const result = await prisma.categoryTransaction.update({
         where: {
             id: id
         },
         data: {
-            label: label
+            label: label,
+            icon: icon
         }
     });
 
