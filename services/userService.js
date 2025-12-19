@@ -1,4 +1,5 @@
 const userRepository = require('../repositories/userRepository.js');
+const roleAppRepository = require('../repositories/roleAppRepository.js');
 
 /**
  * Récupère la liste des utilisateurs
@@ -43,6 +44,19 @@ async function createUser(user) {
     if (!password) {
         throw new Error("Le mot de passe est obligatoire");
     }
+
+    // Récupération du rôle
+    const roleId = 3;
+    const userRole = await roleAppRepository.getRoleById(roleId);
+
+    if (!userRole) {
+        throw new Error("L'id du rôle demandé n'existe pas");
+    } else if (userRole.label !== 'Utilisateur') {
+        throw new Error(`Impossible d'affecter un rôle supérieur à Utilisateur pour un nouveau compte`);
+    }
+
+    user['role'] = roleId;
+    console.log(user.role);
     
     return await userRepository.addUser(user);
 }
@@ -67,7 +81,9 @@ async function editUserProfile(id, user) {
 /**
  * Modifie l'email d'un utilisateur
  */
-async function editUserEmail(id, email) {
+async function editUserEmail(id, user) {
+
+    const { email } = user;
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const emailAlreadyExist = await userRepository.getUserByEmail(email);    
@@ -86,7 +102,9 @@ async function editUserEmail(id, email) {
 /**
  * Modifie le rôle d'un utilisateur
  */
-async function editUserRole(id, roleId) {
+async function editUserRole(id, user) {
+
+    const { roleId } = user
 
     if (isNaN(id)) {
         throw new Error("L'id doit être de type Number");
@@ -101,7 +119,9 @@ async function editUserRole(id, roleId) {
 /**
  * Modifie le mot de passe d'un utilisateur
  */
-async function editUserPassword(id, password) {
+async function editUserPassword(id, user) {
+
+    const { password } = user;
 
     if (isNaN(id)) {
         throw new Error("L'id doit être de type Number");
