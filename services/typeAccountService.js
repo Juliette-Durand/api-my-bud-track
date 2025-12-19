@@ -21,29 +21,29 @@ async function findTypeById(id) {
 /**
  * Ajoute un nouveau rôle
  */
-async function createType(role) {
+async function createType(typeAccount) {
 
-    const { label } = role;   
+    const { label } = typeAccount;   
 
     if (!label) {
         throw new Error("Le libellé est obligatoire");
     }
     
-    return await typeAccountRepository.addType(role);
+    return await typeAccountRepository.addType(typeAccount);
 }
 
 /**
  * Modifie un rôle existant
  */
-async function editType(id, role) {
+async function editType(id, typeAccount) {
 
-    const { label } = role;
+    const { label } = typeAccount;
 
     if (!label) {
         throw new Error("Le libellé est obligatoire");
     }
     
-    return await typeAccountRepository.updateType(id, role);
+    return await typeAccountRepository.updateType(id, typeAccount);
 }
 
 /**

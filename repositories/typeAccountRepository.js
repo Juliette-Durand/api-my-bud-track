@@ -51,9 +51,9 @@ async function addType(typeAccount) {
  * @param {Object} role objet contenant les nouvelles infos du type de compte
  * @returns {Object} contenant les infos du type de compte modifié
  */
-async function updateType(id, role) {
+async function updateType(id, typeAccount) {
     
-    const { label } = role;
+    const { label } = typeAccount;
 
     const result = await prisma.typeAccount.update({
         where: {
