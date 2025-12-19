@@ -6,9 +6,9 @@ const prisma = require('../config/prisma');
  */
 async function getAllTypes() {
 
-    const roles = await prisma.typeAccount.findMany();
+    const typesAccounts = await prisma.typeAccount.findMany();
     
-    return roles;
+    return typesAccounts;
 }
 
 /**
@@ -18,13 +18,13 @@ async function getAllTypes() {
  */
 async function getTypeById(id) {
 
-    const role = await prisma.typeAccount.findUnique({
+    const typeAccount = await prisma.typeAccount.findUnique({
         where: {
             id: id
         }
     });
     
-    return role;
+    return typeAccount;
 }
 
 /**
@@ -48,7 +48,7 @@ async function addType(typeAccount) {
 /**
  * Modifier les informations d'un type de compte via son id
  * @param {Number} id identifiant du type de compte
- * @param {Object} role objet contenant les nouvelles infos du type de compte
+ * @param {Object} typeAccount objet contenant les nouvelles infos du type de compte
  * @returns {Object} contenant les infos du type de compte modifié
  */
 async function updateType(id, typeAccount) {
