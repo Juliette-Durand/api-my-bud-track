@@ -4,6 +4,7 @@ const app = express();
 const roleAppRoutes = require('./routes/roleAppRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const typeAccountRoutes = require('./routes/typeAccountRoutes.js');
+const catTransactionRoutes = require('./routes/catTransactionRoutes.js');
 
 // Middleware pour traiter les données JSON
 app.use(express.json());
@@ -14,6 +15,8 @@ app.use('/role-app', roleAppRoutes);
 app.use('/users', userRoutes);
 // Utilisation du routeur pour les types de compte sous la route /type-account
 app.use('/type-account', typeAccountRoutes);
+// Utilisation du routeur pour les types de compte sous la route /category-transactions
+app.use('/category-transactions', catTransactionRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {
