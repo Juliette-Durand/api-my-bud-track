@@ -79,19 +79,19 @@ async function getUserByEmail(email) {
  * @returns {Object} contenant les infos du utilisateur inséré
  */
 async function addUser(user) {
-    const { lastname, firstname, email, password } = user;
+    const { lastname, firstname, email, password, role } = user;
 
     const dateCreate = new Date();
 
     const result = await prisma.user.create({
         data: {
-            lastname,
-            firstname,
-            email,
-            password,
+            lastname: lastname,
+            firstname: firstname,
+            email: email,
+            password: password,
             createdAt: dateCreate,
             roleApp: {
-                connect: { id: 1 } // rôle par défaut
+                connect: { id: role } // rôle par défaut
             }
         },
         select: {
