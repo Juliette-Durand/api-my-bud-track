@@ -48,13 +48,13 @@ async function getCategoryById(req, res) {
         const id = parseInt(req.params.id);
 
         // Récupération d'un catégorie de transaction
-        const typeAccount = await catTransactionService.findCategoryById(id);
+        const catTransaction = await catTransactionService.findCategoryById(id);
         
         // Si catégorie de transaction récupérée -> succès
-        if (typeAccount) {
+        if (catTransaction) {
             const message = {
                 succeed: true,
-                data: typeAccount
+                data: catTransaction
             }
             res.status(200).json(message);
 
@@ -114,10 +114,10 @@ async function updateCategory(req, res) {
         const id = parseInt(req.params.id);
         
         // Récupère l'utilisateur
-        const typeAccount = await catTransactionService.findCategoryById(id);
+        const catTransaction = await catTransactionService.findCategoryById(id);
 
         // Si utilisateur récupéré -> succès
-        if (typeAccount) {
+        if (catTransaction) {
             await catTransactionService.editCategory(id, req.body);
             const message = {
                 succeed: true,
@@ -156,10 +156,10 @@ async function deleteCategory(req, res) {
         const id = parseInt(req.params.id);
 
         // Récupère la catégorie de transaction
-        const typeAccount = await catTransactionService.findCategoryById(id);
+        const catTransaction = await catTransactionService.findCategoryById(id);
 
         // Si catégorie de transaction récupérée -> succès
-        if (typeAccount) {
+        if (catTransaction) {
             await catTransactionService.removeCategory(id);
             const message = {
                 succeed: true,

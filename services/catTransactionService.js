@@ -21,9 +21,9 @@ async function findCategoryById(id) {
 /**
  * Ajoute une nouvelle catégorie de transaction
  */
-async function createCategory(typeAccount) {
+async function createCategory(catTransaction) {
 
-    const { label, icon } = typeAccount;   
+    const { label, icon } = catTransaction;   
 
     if (!label) {
         throw new Error("Le libellé est obligatoire");
@@ -32,15 +32,15 @@ async function createCategory(typeAccount) {
         throw new Error("L'icône est obligatoire");
     }
     
-    return await catTransactionRepository.addCategory(typeAccount);
+    return await catTransactionRepository.addCategory(catTransaction);
 }
 
 /**
  * Modifie une catégorie de transaction existante
  */
-async function editCategory(id, typeAccount) {
+async function editCategory(id, catTransaction) {
 
-    const { label, icon } = typeAccount;
+    const { label, icon } = catTransaction;
 
     if (!label) {
         throw new Error("Le libellé est obligatoire");
@@ -49,7 +49,7 @@ async function editCategory(id, typeAccount) {
         throw new Error("L'icône est obligatoire");
     }
     
-    return await catTransactionRepository.updateCategory(id, typeAccount);
+    return await catTransactionRepository.updateCategory(id, catTransaction);
 }
 
 /**

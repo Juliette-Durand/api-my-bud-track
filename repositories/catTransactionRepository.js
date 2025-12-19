@@ -49,7 +49,7 @@ async function addCategory(catTransaction) {
 /**
  * Modifier les informations d'une catégorie de transaction via son id
  * @param {Number} id identifiant de la catégorie de transaction
- * @param {Object} role objet contenant les nouvelles infos de la catégorie de transaction
+ * @param {Object} catTransaction objet contenant les nouvelles infos de la catégorie de transaction
  * @returns {Object} contenant les infos de la catégorie de transaction modifiée
  */
 async function updateCategory(id, catTransaction) {
