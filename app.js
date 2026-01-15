@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes.js');
 const typeAccountRoutes = require('./routes/typeAccountRoutes.js');
 const catTransactionRoutes = require('./routes/catTransactionRoutes.js');
 const accountRoutes = require('./routes/accountRoutes.js');
+const transactionRoutes = require('./routes/transactionRoutes.js');
 
 // Middleware pour traiter les données JSON
 app.use(express.json());
@@ -20,6 +21,8 @@ app.use('/type-account', typeAccountRoutes);
 app.use('/category-transactions', catTransactionRoutes);
 // Utilisation du routeur pour les comptes sous la route /accounts
 app.use('/accounts', accountRoutes);
+// Utilisation du routeur pour les transactions sous la route /transactions
+app.use('/transactions', transactionRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {
