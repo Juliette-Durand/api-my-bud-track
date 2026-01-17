@@ -82,6 +82,44 @@ async function getAccountById(req, res) {
 }
 
 /**
+ * Récupère les comptes d'un utilisateur
+ */
+async function getAccountsByUser(req, res) {
+    try {
+        const userId = parseInt(req.params.userId);
+
+        const accounts = await accountService.findAccountsByUser(userId);
+
+        if (accounts.length > 0) {
+            const message = {
+                succeed: true,
+                data: accounts
+            }
+            res.status(200).json(message);
+        } else {
+            const message = {
+                succeed: false,
+                error: {
+                    code: 404,
+                    message: "Aucun compte pour cet utilisateur"
+                }
+            }
+            res.status(message.error.code).json(message);
+        }
+
+    } catch (error) {
+        const message = {
+            succeed: false,
+            error: {
+                code: 400,
+                message: error.message
+            }
+        }
+        res.status(message.error.code).json(message);
+    }
+}
+
+/**
  * Ajoute un nouveau compte
  */
 async function createAccount(req, res) {
@@ -193,6 +231,7 @@ async function deleteAccount(req, res) {
 module.exports = {
     getAllAccounts,
     getAccountById,
+    getAccountsByUser,
     createAccount,
     updateAccount,
     deleteAccount

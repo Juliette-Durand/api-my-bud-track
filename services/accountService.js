@@ -19,6 +19,19 @@ async function findAccountById(id) {
 }
 
 /**
+ * Récupère les comptes d'un utilisateur
+ * @param {Number} userId identifiant de l'utilisateur
+ */
+async function findAccountsByUser(userId) {
+
+    if (isNaN(userId)) {
+        throw new Error("L'id doit être de type Number");
+    }
+
+    return await accountRepository.getAccountsByUser(userId);
+}
+
+/**
  * Ajoute un nouveau compte
  */
 async function createAccount(account) {
@@ -84,6 +97,7 @@ async function removeAccount(id) {
 module.exports = {
     findAllAccounts,
     findAccountById,
+    findAccountsByUser,
     createAccount,
     editAccount,
     removeAccount

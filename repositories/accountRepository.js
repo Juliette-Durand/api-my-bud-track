@@ -49,6 +49,35 @@ async function getAccountById(id) {
 }
 
 /**
+ * Récupération des comptes d'un utilisateur
+ * @param {Number} userId identifiant de l'utilisateur
+ * @returns {Array} tableau des comptes liés à l'utilisateur
+ */
+async function getAccountsByUser(userId) {
+
+    const accounts = await prisma.account.findMany({
+        where: {
+            isActive: true,
+            ownAccounts: {
+                some: {
+                    userId: userId
+                }
+            }
+        },
+        include: {
+            typeAccount: {
+                select: {
+                    id: true,
+                    label: true
+                }
+            }
+        }
+    });
+
+    return accounts;
+}
+
+/**
  * Ajout d'un compte en base de données
  * @param {Object} account objet contenant les infos du compte
  * @returns {Object} contenant les infos du compte inséré
