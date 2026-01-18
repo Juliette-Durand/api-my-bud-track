@@ -1,4 +1,6 @@
 const accountRepository = require('../repositories/accountRepository.js');
+const ownAccountRepository = require('../repositories/ownAccountRepository.js');
+const userRepository = require('../repositories/userRepository.js');
 
 /**
  * Récupère la liste des comptes
@@ -35,8 +37,7 @@ async function findAccountsByUser(userId) {
  * Ajoute un nouveau compte
  */
 async function createAccount(account) {
-
-    const { label, balance, typeAccountId } = account;   
+    const { label, balance, typeAccountId, userIds } = account;
 
     if (!label) {
         throw new Error("Le libellé est obligatoire");
@@ -53,8 +54,35 @@ async function createAccount(account) {
     if (isNaN(typeAccountId)) {
         throw new Error("L'id du type de compte doit être de type Number");
     }
-    
-    return await accountRepository.addAccount(account);
+
+    // Vérifie tous les utilisateurs avant création du compte
+    if (Array.isArray(userIds) && userIds.length > 0) {
+        for (const userId of userIds) {
+            if (isNaN(userId)) {
+                throw new Error("L'id utilisateur doit être de type Number");
+            }
+
+            const user = await userRepository.getUserById(userId);
+            if (!user) {
+                throw new Error(`Utilisateur ${userId} introuvable`);
+            }
+        }
+    }
+
+    // Création du compte
+    const createdAccount = await accountRepository.addAccount(account);
+
+    // Création des relations users et accounts
+    if (Array.isArray(userIds) && userIds.length > 0) {
+        for (const userId of userIds) {
+            await ownAccountRepository.addOwnAccount({
+                userId: userId,
+                accountId: createdAccount.id
+            });
+        }
+    }
+
+    return createdAccount;
 }
 
 /**
@@ -79,7 +107,7 @@ async function editAccount(id, account) {
     if (isNaN(typeAccountId)) {
         throw new Error("L'id du type de compte doit être de type Number");
     }
-    
+
     return await accountRepository.updateAccount(id, account);
 }
 
@@ -87,7 +115,7 @@ async function editAccount(id, account) {
  * Supprime un compte existant
  */
 async function removeAccount(id) {
-    
+
     if (isNaN(id)) {
         throw new Error("L'id doit être de type Number");
     }

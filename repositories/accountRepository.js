@@ -5,8 +5,7 @@ const prisma = require('../config/prisma');
  * @returns {Array} tableau des comptes
  */
 async function getAllAccounts() {
-
-    const accounts = await prisma.account.findMany({
+    return await prisma.account.findMany({
         where: {
             isActive: true
         },
@@ -16,11 +15,21 @@ async function getAllAccounts() {
                     id: true,
                     label: true
                 }
+            },
+            owners: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            firstname: true,
+                            lastname: true,
+                            email: true
+                        }
+                    }
+                }
             }
         }
     });
-    
-    return accounts;
 }
 
 /**
@@ -41,10 +50,22 @@ async function getAccountById(id) {
                     id: true,
                     label: true
                 }
+            },
+            owners: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            firstname: true,
+                            lastname: true,
+                            email: true
+                        }
+                    }
+                }
             }
         }
     });
-    
+
     return account;
 }
 
@@ -83,7 +104,7 @@ async function getAccountsByUser(userId) {
  * @returns {Object} contenant les infos du compte inséré
  */
 async function addAccount(account) {
-    
+
     const { label, balance, typeAccountId } = account;
 
     const result = await prisma.account.create({
@@ -106,7 +127,7 @@ async function addAccount(account) {
  * @returns {Object} contenant les infos du compte modifié
  */
 async function updateAccount(id, account) {
-    
+
     const { label, balance, typeAccountId } = account;
 
     const result = await prisma.account.update({
@@ -136,7 +157,7 @@ async function deleteAccount(id) {
         where: {
             id: id
         }
-    });    
+    });
 
     return result;
 }
