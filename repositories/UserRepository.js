@@ -37,6 +37,7 @@ async function getUserById(id) {
             lastname: true,
             firstname: true,
             email: true,
+            refreshToken: true,
             roleApp: {
                 select: {
                     id: true,
@@ -45,12 +46,12 @@ async function getUserById(id) {
             }
         },
         where: {
-            id: id,
-            isActive: true
-        }
+        id: id,
+        isActive: true
+    }
     });
 
-    return user;
+return user;
 }
 
 /**
@@ -62,6 +63,7 @@ async function getUserByEmail(email) {
 
     const user = await prisma.user.findUnique({
         select: {
+            id: true,
             email: true,
             password: true
         },
@@ -207,6 +209,23 @@ async function deleteUser(id) {
     return result;
 }
 
+/**
+ * Mettre à jour me refresh token de l'utilisateur
+ * @param {String} refreshToken 
+ * @param {String} email 
+ * @returns 
+ */
+async function saveRefreshToken(refreshToken, userId) {
+    return prisma.user.update({
+        where: { id: userId },
+        data: { refreshToken: refreshToken },
+        select: {
+            email: true,
+            refreshToken: true
+        }
+    });
+}
+
 module.exports = {
     getAllUsers,
     getUserById,
@@ -216,5 +235,6 @@ module.exports = {
     updateUserEmail,
     updateUserRole,
     updateUserPassword,
-    deleteUser
+    deleteUser,
+    saveRefreshToken
 }

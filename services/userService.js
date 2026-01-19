@@ -20,6 +20,20 @@ async function findUserById(id) {
 }
 
 /**
+ * Récupère un utilisateur via son email
+ */
+async function findUserByEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!email) {
+        throw new Error("L'adresse email est obligatoire");
+    } else if (!emailRegex.test(email)) {
+        throw new Error("L'adresse email n'est pas valide");
+    }
+    return await userRepository.getUserByEmail(email);
+}
+
+/**
  * Ajoute un nouvel utilisateur
  */
 async function createUser(user) {
@@ -144,13 +158,22 @@ async function removeUser(id) {
     return await userRepository.deleteUser(id);
 }
 
+/**
+ * Enregistre le token en base de données
+ */
+async function saveRefreshToken(refreshToken, userId) {
+    return await userRepository.saveRefreshToken(refreshToken, userId);
+}
+
 module.exports = {
     findAllUsers,
     findUserById,
+    findUserByEmail,
     createUser,
     editUserProfile,
     editUserEmail,
     editUserRole,
     editUserPassword,
-    removeUser
+    removeUser,
+    saveRefreshToken
 };

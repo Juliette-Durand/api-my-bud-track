@@ -71,6 +71,6 @@ Cette API a été conçue spécifiquement pour répondre aux besoins fonctionnel
 
 - **Version actuelle** : 1.0.0  
 - **Date de création** : 15/12/2025  
-- **Dernière modification** : 15/12/2025
+- **Dernière modification** : 19/01/2026
 
 Projet réalisé par Juliette DURAND, dans le cadre de la formation ***Concepteur Développeur d'Applications*** réalisée au sein du **CCI Campus de Strasbourg**.

@@ -15,14 +15,15 @@ datasource db {
 
 // === MODELS === //
 model User {
-    id        Int      @id @default(autoincrement())
-    lastname  String   @db.VarChar(50)
-    firstname String   @db.VarChar(50)
-    email     String   @unique @db.VarChar(120)
-    password  String
-    createdAt DateTime @default(now())
-    isActive  Boolean  @default(true)
-    roleAppId Int
+    id           Int      @id @default(autoincrement())
+    lastname     String   @db.VarChar(50)
+    firstname    String   @db.VarChar(50)
+    email        String   @unique @db.VarChar(120)
+    password     String
+    createdAt    DateTime @default(now())
+    isActive     Boolean  @default(true)
+    roleAppId    Int
+    refreshToken String?  @db.Text
 
     transactions  Transaction[]
     ownedAccounts OwnAccount[]
