@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const cors = require("cors");
+require("dotenv").config();
 
 const roleAppRoutes = require('./routes/roleAppRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
@@ -11,6 +13,12 @@ const authRoutes = require('./routes/authRoutes.js');
 
 // Middleware pour traiter les données JSON
 app.use(express.json());
+
+// Gestion des erreurs CORS
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+}));
 
 // Utilisation du routeur pour les rôles de l'application sous la route /role-app
 app.use('/role-app', roleAppRoutes);
