@@ -21,14 +21,21 @@ async function signUp(req, res) {
             password: hashedPassword
         });
 
-        res.status(201).json({
-            message: "Utilisateur inscrit avec succès"
-        });
+        const message = {
+            succeed: true,
+            message: "Utilisateur ajouté avec succès"
+        }
+        res.status(201).json(message);
 
     } catch (error) {
-        res.status(500).json({
-            message: `${error}`
-        });
+        const message = {
+            succeed: false,
+            error: {
+                code: 400,
+                message: error.message
+            }
+        }
+        res.status(message.error.code).json(message);
     }
 }
 
@@ -43,17 +50,27 @@ async function signIn(req, res) {
         const user = await userService.findUserByEmail(email);
 
         if (!user) {
-            return res.status(401).json({
-                message: "Identifiants ou mot de passe incorrect"
-            });
+            const message = {
+                succeed: false,
+                error: {
+                    code: 401,
+                    message: "Identifiants ou mot de passe incorrect"
+                }
+            }
+            res.status(message.error.code).json(message);
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return res.status(401).json({
-                message: "Identifiants ou mot de passe incorrect"
-            });
+            const message = {
+                succeed: false,
+                error: {
+                    code: 401,
+                    message: "Identifiants ou mot de passe incorrect"
+                }
+            }
+            res.status(message.error.code).json(message);
         }
 
         // Access token
@@ -73,12 +90,21 @@ async function signIn(req, res) {
         // Enregistrement du refresh token en base de données
         await userService.saveRefreshToken(refreshToken, user.id);
 
-        res.status(200).json({ accessToken, refreshToken });
+        const message = {
+            succeed: true,
+            data: { accessToken, refreshToken }
+        }
+        res.status(200).json(message);
 
     } catch (error) {
-        res.status(500).json({
-            message: `${error}`
-        });
+        const message = {
+            succeed: false,
+            error: {
+                code: 400,
+                message: error.message
+            }
+        }
+        res.status(message.error.code).json(message);
     }
 }
 
@@ -105,10 +131,21 @@ async function getRefreshToken(req, res) {
 
         await userService.saveRefreshToken(refreshToken, userId);
 
+        const message = {
+            succeed: true,
+            data: { accessToken, refreshToken }
+        }
+        res.status(200).json(message);
 
-        res.status(200).json({ accessToken, refreshToken });
     } catch (error) {
-        res.status(401).json({ message: "Impossible de renouveler le token", error });
+        const message = {
+            succeed: false,
+            error: {
+                code: 400,
+                message: error.message
+            }
+        }
+        res.status(message.error.code).json(message);
     }
 };
 
@@ -121,13 +158,21 @@ async function logout(req, res) {
 
         await userService.saveRefreshToken(null, userId);
 
-        res.status(200).json({
+        const message = {
+            succeed: true,
             message: "Déconnexion réussie"
-        });
+        }
+        res.status(200).json(message);
+
     } catch (error) {
-        res.status(500).json({
-            message: `${error}`
-        });
+        const message = {
+            succeed: false,
+            error: {
+                code: 400,
+                message: error.message
+            }
+        }
+        res.status(message.error.code).json(message);
     }
 }
 
